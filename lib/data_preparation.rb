@@ -16,5 +16,10 @@ class DataPreparation
     file_to_array
   end
 
+  def select_airport_key(string)
+    index = string =~ (/(?<!\w)(K+\w{3})(?!\w)/)
+    airport = string[20..23]
+    airport.to_sym
+  end
 
 end
