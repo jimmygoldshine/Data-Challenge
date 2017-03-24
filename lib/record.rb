@@ -12,6 +12,7 @@ class Record
   def objectify
     extract_visibility
     extract_wind_speed
+    extract_cloud_ceiling
     self
   end
 
@@ -25,6 +26,15 @@ class Record
   def extract_wind_speed
     index = @string =~ /(?<=\d{3})(\d{2})(?=KT)/
     @wind_speed = @string[index..index+1].to_i
+  end
+
+  def extract_cloud_ceiling
+    index = @string =~ /(?<=\w{3})(\d{3})(?=\s)/
+    if index
+      @cloud_ceiling = "#{@string[index..index+2]}0".to_i
+    else
+      @cloud_ceiling = 12000
+    end
   end
 
 end
