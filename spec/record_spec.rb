@@ -9,8 +9,13 @@ describe Record do
     expect(record.objectify).to be_an_instance_of(Record)
   end
 
-  it 'should add a four digit string to property "visibility"' do
+  it 'should add a 2 digit number to property "visibility"' do
     record.objectify
-    expect(record.visibility.length).to be(4)
+    expect(record.visibility).to be(10)
+  end
+
+  it 'should add a 2 digit number to property "wind_speed"' do
+    record.objectify
+    expect(record.wind_speed).to be(05)
   end
 end
