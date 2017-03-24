@@ -10,15 +10,16 @@ class DataPreparation
 
   def read_file(file)
     file_to_array = []
-    File.foreach(file) do |line|
-      file_to_array << line
+    File.readlines(file).each do |line|
+      airport = select_airport_key(line)
+      @output[airport] = line
     end
-    file_to_array
+    @output
   end
 
   def select_airport_key(string)
     index = string =~ (/(?<!\w)(K+\w{3})(?!\w)/)
-    airport = string[20..23]
+    airport = string[index..index+3]
     airport.to_sym
   end
 
