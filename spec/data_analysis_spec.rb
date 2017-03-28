@@ -8,13 +8,11 @@ describe DataAnalysis do
 
   it "should output 15 records" do
     data.execute(file)
-    data.metadata
     expect(data_analysis.rank("top", "cloud_ceiling").length).to eq(15)
   end
 
   it "should output 15 records" do
     data.execute(file)
-    data.metadata
     expect(data_analysis.rank("bottom", "visibility").length).to eq(15)
   end
 
