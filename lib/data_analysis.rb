@@ -8,11 +8,11 @@ class DataAnalysis
     sorted = @data.sort_by do |airport, records|
       case attribute
       when "cloud_ceiling"
-        records[0][0]
+        records[0]
       when "visibility"
-        records[0][1]
+        records[1]
       when "wind_speed"
-        records[0][1]
+        records[2]
       else
         raise "Invalid attribute"
       end
