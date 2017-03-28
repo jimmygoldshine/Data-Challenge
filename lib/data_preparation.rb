@@ -24,6 +24,25 @@ class DataPreparation
     @output
   end
 
+  def metadata
+    @output.each_value do |v|
+      running_cloud_ceiling = 0
+      running_visibility = 0
+      running_wind_speed = 0
+      v.each do |record|
+        running_cloud_ceiling += record.cloud_ceiling
+        running_visibility += record.visibility
+        running_wind_speed += record.wind_speed
+      end
+      average_cloud_ceiling = running_cloud_ceiling / v.length
+      average_visibility = running_visibility / v.length
+      average_wind_speed = running_wind_speed / v.length
+      metadata = [average_cloud_ceiling, average_visibility, average_wind_speed]
+      v.unshift(metadata)
+    end
+    @output
+  end
+
   def select_airport_key(string)
     index = string =~ (/(?<!\w)(K+\w{3})(?!\w)/)
     airport = string[index..index+3]

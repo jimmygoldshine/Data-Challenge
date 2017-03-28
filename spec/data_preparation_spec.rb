@@ -18,4 +18,5 @@ describe DataPreparation do
     string = '2015-03-25 21:15:00	KCXP 252115Z AUTO 08005KT 10SM CLR 17/M01 A3033 RMK AO2'
     expect(data_preparation.select_airport_key(string)).to be(:KCXP)
   end
+
 end
