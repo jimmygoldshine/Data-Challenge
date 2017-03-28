@@ -1,6 +1,9 @@
+require './lib/record.rb'
+
 class DataPreparation
 
-  def initialize
+  def initialize(record_klass)
+    @record = record_klass
     @output = {}
   end
 
@@ -8,11 +11,15 @@ class DataPreparation
     @output
   end
 
-  def read_file(file)
-    file_to_array = []
+  def execute(file)
     File.readlines(file).each do |line|
       airport = select_airport_key(line)
-      @output[airport] = line
+      record = @record.new(line)
+      if @output[airport]
+        @output[airport] << record.objectify
+      else
+        @output[airport] = [record.objectify]
+      end
     end
     @output
   end

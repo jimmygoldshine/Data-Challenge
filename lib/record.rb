@@ -20,18 +20,23 @@ class Record
 
   def extract_visibility
     index = @string =~ /(?<=\s)(\w{2}+SM)(?=\s)/
-    @visibility = @string[index..index+1].to_i
+    if index
+      @visibility = @string[index..index+1].to_i
+    else
+      index = @string =~ /(SM)(?=\s)/
+      @visibility = 1.0/(@string[index-1]).to_i
+    end
   end
 
   def extract_wind_speed
-    index = @string =~ /(?<=\d{3})(\d{2})(?=KT)/
+    index = @string =~ /(\d{2})(?=KT)/
     @wind_speed = @string[index..index+1].to_i
   end
 
   def extract_cloud_ceiling
     index = @string =~ /(?<=\w{3})(\d{3})(?=\s)/
     if index
-      @cloud_ceiling = "#{@string[index..index+2]}0".to_i
+      @cloud_ceiling = "#{@string[index..index+2]}00".to_i
     else
       @cloud_ceiling = 12000
     end

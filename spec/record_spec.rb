@@ -21,12 +21,12 @@ describe Record do
 
   it 'should add a 3 digit number to property "cloud_ceiling"' do
     record.objectify
-    expect(record.cloud_ceiling).to be(300)
+    expect(record.cloud_ceiling).to be(3000)
   end
 
   it 'should add a number to property "cloud_ceiling"' do
     record.objectify
-    expect(record.cloud_ceiling).to be(300)
+    expect(record.cloud_ceiling).to be(3000)
   end
 
   it "should count CLR as 12000ft" do
