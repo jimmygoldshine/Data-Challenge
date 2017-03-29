@@ -11,6 +11,7 @@ class DataAnalysis
     add_cloud_rank
     add_visibility_rank
     add_wind_speed_rank
+    add_overall_score
   end
 
   def rank(condition, attribute, file)
@@ -36,11 +37,31 @@ class DataAnalysis
     output(file, sorted_array)
   end
 
+  def add_overall_score
+    @sorted.each do |scores|
+      rank = scores[1][3] + scores[1][4] + scores[1][5]
+      scores[1] << rank
+    end
+  end
+
+  def rank_by_overall_score(condition, file)
+    sorted_array = @sorted.sort { |a, b| a[1][6] <=> b[1][6] }
+    print sorted_array
+    if condition == "top"
+      sorted_array = sorted_array[0..14]
+    elsif condition == "bottom"
+      sorted_array = sorted_array[-15..-1]
+    else
+      raise "Invalid condition"
+    end
+    output(file, sorted_array)
+  end
+
   private
 
   def output(file, array)
     CSV.open(file, "wb") do |csv|
-      csv << ["Airport", "Cloud Ceiling", "Visibility", "Wind Speed"]
+      csv << ["Airport", "Average Cloud Ceiling", "Average Visibility", "Average Wind Speed", "Cloud Ceiling Rank", "Visibility Rank", "Wind Speed Rank", "Overall Score"]
       array.each do |record|
         csv << record.flatten
       end
@@ -72,7 +93,6 @@ class DataAnalysis
       i += 1
       record[1] << i
     end
-    print @sorted
   end
 
 end
