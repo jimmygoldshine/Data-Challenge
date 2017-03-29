@@ -23,6 +23,7 @@ class DataPreparation
     end
     metadata
     dropRecords
+    puts "dp #{@output.length}"
     @output
   end
 
@@ -32,9 +33,15 @@ class DataPreparation
       running_visibility = 0
       running_wind_speed = 0
       v.each do |record|
-        running_cloud_ceiling += record.cloud_ceiling
-        running_visibility += record.visibility
-        running_wind_speed += record.wind_speed
+        if record.cloud_ceiling
+          running_cloud_ceiling += record.cloud_ceiling
+        end
+        if record.visibility
+          running_visibility += record.visibility
+        end
+        if record.wind_speed
+          running_wind_speed += record.wind_speed
+        end
       end
       average_cloud_ceiling = running_cloud_ceiling / v.length
       average_visibility = running_visibility / v.length
@@ -55,7 +62,7 @@ class DataPreparation
   def select_airport_key(string)
     index = string =~ (/(?<!\w)(K+\w{3})(?!\w)/)
     airport = string[index..index+3]
-    airport.to_sym
+    airport
   end
 
 end

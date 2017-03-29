@@ -1,30 +1,78 @@
+require 'csv'
+
 class DataAnalysis
 
   def initialize(data)
     @data = data.output
+    @sorted = []
   end
 
-  def rank(condition, attribute)
-    sorted = @data.sort_by do |airport, records|
+  def add_ranks
+    add_cloud_rank
+    add_visibility_rank
+    add_wind_speed_rank
+  end
+
+  def rank(condition, attribute, file)
+    @sorted = @sorted.sort do |a, b|
       case attribute
       when "cloud_ceiling"
-        records[0]
+        a[1][3] <=> b[1][3]
       when "visibility"
-        records[1]
+        a[1][4] <=> b[1][4]
       when "wind_speed"
-        records[2]
+        a[1][5] <=> b[1][5]
       else
         raise "Invalid attribute"
       end
     end
     if condition == "top"
-      sorted = sorted.reverse[0..14]
+      sorted_array = @sorted[0..14]
     elsif condition == "bottom"
-      sorted = sorted[0..14]
+      sorted_array = @sorted[-15..-1]
     else
       raise "Invalid condition"
     end
-    sorted
+    output(file, sorted_array)
+  end
+
+  private
+
+  def output(file, array)
+    CSV.open(file, "wb") do |csv|
+      csv << ["Airport", "Cloud Ceiling", "Visibility", "Wind Speed"]
+      array.each do |record|
+        csv << record.flatten
+      end
+    end
+  end
+
+  def add_cloud_rank
+    @sorted = @data.sort_by {|airport, record| record[0]}.reverse!
+    i = 0
+    @sorted.each do |record|
+      i += 1
+      record[1] << i
+    end
+  end
+
+  def add_visibility_rank
+    @sorted = @data.sort_by {|airport, record| record[1]}.reverse!
+    i = 0
+    @sorted.each do |record|
+      i += 1
+      record[1] << i
+    end
+  end
+
+  def add_wind_speed_rank
+    @sorted = @data.sort_by {|airport, record| record[2]}
+    i = 0
+    @sorted.each do |record|
+      i += 1
+      record[1] << i
+    end
+    print @sorted
   end
 
 end
